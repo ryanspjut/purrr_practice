@@ -1,0 +1,143 @@
+---
+title: "purrr practice"
+output:
+  html_document:
+    df_print: paged
+---
+
+The goal is to take an intentionally labored approach to learning the purrr package.  We'll start with a wide set of sample datasets and practice purrr concepts on each dataset.  The plan is to complete ~ 25 drills per concept until the user is fluent with the concept.
+
+```{r load libraries, message=FALSE, warning=FALSE}
+library(tidyverse)
+
+```
+
+# Chapter 1
+
+## Getting used to standard map syntax
+
+The map function takes two arguments -- map(data, function).
+
+To start simply, let's start with a dataframe that only has one column:  the disp column of the mtcars dataset.  We'll call this slimmed-down dataset mtcars_disp.
+
+
+```{r}
+mtcars_disp <- mtcars %>% 
+  select(disp)
+
+mtcars_disp
+
+```
+
+And we're going to do a very simple operation with this dataset:  we're just going to take the square root of those numbers.
+
+This is an easy thing to do with just the sqrt function, so let's start by just using mutate and the sqrt function.
+```{r}
+mtcars_disp %>% 
+  mutate(sqrt_disp = sqrt(disp))
+```
+
+
+
+
+The ```map``` function takes two arguments: the data and the function.
+The syntax is map(data, function).
+
+Let's take the square root of the mtcars_disp data using the map function.
+
+To begin, don't use the pipe, just fill in the arguments directly for map(data, function).  You'll notice that the outcome looks a little different than what you had when you used ```mutate```.  Don't worry about that.  Just make sure that the values match (i.e., the first two values are 12.649111, the third value is 10.392305, etc.)
+
+```{r}
+map(mtcars_disp, sqrt)
+```
+
+
+Recall that in the tidyverse, you can use the pipe to pass values in as the first argument of functions.  For the next exercises, we'll use the pipe in order to save us the step of creating a new object, which is just a single column of a stored dataset.  To do this with mtcars, we use the following command.
+
+```{r}
+mtcars %>% 
+  select(disp) %>% 
+  map(sqrt)
+```
+
+This way we don't have to create a new object called ```mtcars_disp```, and that will help us as we try different datasets.  We don't need to create new single-column objects for each dataset.
+
+Let's do the following exercises.
+
+```{r}
+# 1) Using datasets::attitude determine the square root of each value in the rating column.
+
+attitude %>%
+  select(rating) %>% 
+  map(sqrt)
+
+```
+```{r}
+# 2) Using datasets::sleep determine the absolute value of the extra column.
+sleep %>% 
+  select(extra) %>% 
+  map(abs)
+
+
+```
+
+```{r}
+# 3)
+iris %>% 
+  select(Sepal.Length) %>% 
+  map(ceiling)
+
+```
+
+```{r}
+# 4)
+InsectSprays %>% 
+  select(count) %>% 
+  map(cos)
+```
+
+```{r}
+# 5)
+Loblolly %>% 
+  select(height) %>% 
+  map(round)
+```
+
+
+```{r}
+# 6)
+BOD %>% 
+  select(Time) %>% 
+  map(factorial)
+```
+
+
+```{r}
+# 7)
+DNase %>% 
+  select(density) %>% 
+  map(sin)
+
+```
+
+```{r}
+# 8)
+OrchardSprays %>% 
+  select(treatment) %>% 
+  map(str_to_lower)
+```
+```{r}
+# 9)
+esoph %>% 
+  select(alcgp) %>% 
+  map(str_length)
+  
+```
+
+```{r}
+# 10)
+InsectSprays %>% 
+  select(count) %>% 
+  map(sqrt)
+```
+
