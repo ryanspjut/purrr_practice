@@ -64,6 +64,8 @@ This way we don't have to create a new object called ```mtcars_disp```, and that
 
 Let's do the following exercises.
 
+**these use functions that work on each item in a column**
+
 ```{r}
 # 1) Using datasets::attitude determine the square root of each value in the rating column.
 
@@ -140,4 +142,4 @@ InsectSprays %>%
   select(count) %>% 
   map(sqrt)
 ```
-
+Notice that these all start with dataframes and output vectors.
