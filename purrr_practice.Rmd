@@ -9,7 +9,7 @@ The goal is to take an intentionally labored approach to learning the purrr pack
 
 ```{r load libraries, message=FALSE, warning=FALSE}
 library(tidyverse)
-
+library(lubridate)
 ```
 
 # Chapter 1
@@ -159,12 +159,12 @@ InsectSprays %>%
 Each of these functions happens to work on just a single value (i.e., square root of a single number, round a single number, make a single letter lowercase).  These functions were chosen for these exercises specifically because they don't act on multiple values together the way a function like ```mean``` does.  The purpose in doing this is to get the sense of passing a single value to a function.  Even though the results return immediately, ```map``` is applying the function to each element of the column being passed to it.
 
 
-Notice that these all start with dataframes and output vectors.  We'll get to input structures and output structures later.
+Notice that the output is a list.  It's a list with one element which is named after the column.  In this case, the single list element happens to be a vector because the function passed to ```map``` creates a vector.
 
 
 ## Let's use functions that act on multiple values
 
-So we've just been experimenting with functions that take individual values as arguments.  Let's see what happens now as we pass the same data argument to a function like ```mean``` that works on a set of numbers.
+So we've just been experimenting with functions that take individual values as arguments.  Let's see what happens now as we experiment with functions like ```mean``` that works on a set of numbers.
 
 ```{r}
 # 1) Using datasets::attitude determine the mean of the rating column.
@@ -176,10 +176,10 @@ attitude %>%
 ```
 
 ```{r}
-# 2) Using datasets::sleep determine the median of the extra column.
+# 2) Using tidyr::construction, determine the median of the Midwest column.
 
-sleep %>% 
-  select(extra) %>% 
+construction %>% 
+  select(Midwest) %>% 
   map(median)
 ```
 
@@ -192,10 +192,10 @@ iris %>%
 ```
 
 ```{r}
-# 4) Using datasets::InsectSprays calculate the interquartile range of the count column.
+# 4) Using datasets::airquality calculate the interquartile range of the count column.
 
-InsectSprays %>% 
-  select(count) %>% 
+airquality %>% 
+  select(Wind) %>% 
   map(IQR)
 
 ```
@@ -210,9 +210,142 @@ billboard %>%
 ```
 So when your data is a single column, and your function takes a single value as an argument, the function operates on each value of the data.  This is no different than a mutate function.  One important difference, though, is that the input data is a data frame (a column of a dataframe which is also, itself, a dataframe) and the output is a vector.
 
+When your data is a single column and your function takes a column of data to return a single value, you get a single value per column.  Importantly, this operation takes a dataframe as input (a column of a dataframe) and the output is a list.  So far we have only worked with a single column.  Note that the list only has a single value.  Also notice that the name of the list element is the column name.
+
+In a moment, we'll look closer at list structures, but let's stay with ```map``` a little longer first.
+
+
+
+## Functions that act on multiple values getting multiple columns
+
+We're going to continue working with functions that take entire columns and return a single value.  But this time we're going to pass more than one column to the function.  For ease of comparison, we'll use the same examples that we just finished with.
+
 ```{r}
+
+# 1) Using datasets::attitude determine the mean of the rating and complaints columns.
+
+attitude %>%
+  select(rating, complaints) %>% 
+  map(mean)
 
 
 
 ```
+
+```{r}
+# 2) Using tidyr::construction determine the median of the Northeast, Midwest, South and West columns.
+construction %>% 
+  select(Northeast, Midwest, South, West) %>% 
+  map(median)
+```
+```{r}
+# 3) Using datasets::iris, determine the sum of all values in the Sepal.Length, Sepal.Width and Petal.Length columns.
+
+iris %>% 
+  select(Sepal.Length, Sepal.Width, Petal.Length) %>% 
+  map(sum)
+```
+
+```{r}
+# 4) Using datasets::airquality, calculate the interquartile range of the Wind, Temp and Day columns.
+
+airquality %>% 
+  select(Wind, Temp, Day) %>% 
+  map(IQR)
+
+```
+
+```{r}
+# 5) Using tidyr::billboard, identify the maximum value (alphabetically) in the artist and track columns using the max function.
+
+billboard %>% 
+  select(artist, track) %>% 
+  map(max)
+
+```
+
+
+In these examples, the input was multiple columns and the output was a list -- one element for each column of the input.  And like we saw before, the list elements are named based on the columns.
+
+Importantly, ```map``` applies the function to each element of input.  But each element of input can be different.  When we used a single column with a single-value function like sqrt, there were several inputs -- one for each item in the column.  When we used a single column with a multi-value function like sum, the function worked on the column as a whole -- there was only one input and it was the complete column.  Then when we passed multiple columns to a multi-value function like sum, ```map``` iterated over each column, so the function was called once for each column of input.
+
+Just for completeness, let's now pass multiple columns to a function that takes individual values.
+
+```{r}
+
+# 1) Using datasets::attitude determine the mean of the rating and complaints columns.
+
+attitude %>%
+  select(rating, complaints) %>% 
+  map(sqrt)
+
+```
+
+See that this combines what we saw in the previous examples.  When we had a single column passed to a single-value function, we got a vector of results.  When we passed a single column to a multi-value function, we got a list that only had one value.
+
+When we passed multiple columns to a multi-value function, we got a list where each list element held the single value that the multi-value function produced for that column.
+
+And finally, when we passed multiple columns to a single-value function, we got a list where each list element held the vector of values produced for each column.
+
+
+For practice, let's combine all four of these scenarios to help get a sense of what the output will look like.
+
+```{r}
+# 1) Using datasets::attitude determine the sum of the rating, privileges and raises columns.
+
+attitude %>%
+  select(rating, privileges, raises) %>% 
+  map(sum)
+
+```
+
+```{r}
+# 2) Using datasets::iris, round each value in the Sepal.Width and Petal.Length columns using the ceiling function.
+
+iris %>% 
+  select(Sepal.Width, Petal.Length) %>% 
+  map(ceiling)
+
+```
+
+```{r}
+Loblolly %>% 
+  select(age) %>% 
+  map(min)
+
+```
+
+```{r}
+tidyr::construction %>% 
+  select(Year, South, Northeast) %>% 
+  map(sin)
+
+```
+
+```{r}
+tidyr::construction %>% 
+  select(Year, South, Northeast) %>% 
+  map(sum)
+
+```
+
+```{r}
+tidyr::billboard %>% 
+  select(date.entered) %>% 
+  map(month)
+
+
+```
+
+
+
+
+
+
+
+
+
+
+
+
 
