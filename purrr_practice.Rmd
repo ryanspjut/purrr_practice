@@ -80,7 +80,8 @@ attitude %>%
 
 ```
 ```{r}
-# 2) Using datasets::sleep determine the absolute value of the extra column.
+# 2) Using datasets::sleep, determine the absolute value of each value in the extra column.
+
 sleep %>% 
   select(extra) %>% 
   map(abs)
@@ -89,7 +90,8 @@ sleep %>%
 ```
 
 ```{r}
-# 3)
+# 3) Using datasets::iris, round of each value in Sepal.Length up using the ceiling function.
+
 iris %>% 
   select(Sepal.Length) %>% 
   map(ceiling)
@@ -97,14 +99,16 @@ iris %>%
 ```
 
 ```{r}
-# 4)
+# 4) Using datasets::InsectSprays, calculate the cosine of of each value in the count column.
+
 InsectSprays %>% 
   select(count) %>% 
   map(cos)
 ```
 
 ```{r}
-# 5)
+# 5) Using datasets::Lobolly round each value in the height column.
+
 Loblolly %>% 
   select(height) %>% 
   map(round)
@@ -112,7 +116,8 @@ Loblolly %>%
 
 
 ```{r}
-# 6)
+# 6) Using datasets::BOD determine the factorial of each value in the Time column.
+
 BOD %>% 
   select(Time) %>% 
   map(factorial)
@@ -120,7 +125,8 @@ BOD %>%
 
 
 ```{r}
-# 7)
+# 7) Using datasets::DNase, calculate the sine of each value in the density column.
+
 DNase %>% 
   select(density) %>% 
   map(sin)
@@ -128,13 +134,15 @@ DNase %>%
 ```
 
 ```{r}
-# 8)
+# 8) Using datasets::OrchardSprays, make each value in the treatment column lowercase using str_to_lower.
+
 OrchardSprays %>% 
   select(treatment) %>% 
   map(str_to_lower)
 ```
 ```{r}
-# 9)
+# 9) Using datasets::esoph, determine the length (number of characters) of each value in the alcgp column.
+
 esoph %>% 
   select(alcgp) %>% 
   map(str_length)
@@ -142,9 +150,69 @@ esoph %>%
 ```
 
 ```{r}
-# 10)
+# 10) Using datasets::InsectSprays, determine the square root of each value in the count column.
+
 InsectSprays %>% 
   select(count) %>% 
   map(sqrt)
 ```
-Notice that these all start with dataframes and output vectors.
+Each of these functions happens to work on just a single value (i.e., square root of a single number, round a single number, make a single letter lowercase).  These functions were chosen for these exercises specifically because they don't act on multiple values together the way a function like ```mean``` does.  The purpose in doing this is to get the sense of passing a single value to a function.  Even though the results return immediately, ```map``` is applying the function to each element of the column being passed to it.
+
+
+Notice that these all start with dataframes and output vectors.  We'll get to input structures and output structures later.
+
+
+## Let's use functions that act on multiple values
+
+So we've just been experimenting with functions that take individual values as arguments.  Let's see what happens now as we pass the same data argument to a function like ```mean``` that works on a set of numbers.
+
+```{r}
+# 1) Using datasets::attitude determine the mean of the rating column.
+
+attitude %>%
+  select(rating) %>% 
+  map(mean)
+
+```
+
+```{r}
+# 2) Using datasets::sleep determine the median of the extra column.
+
+sleep %>% 
+  select(extra) %>% 
+  map(median)
+```
+
+```{r}
+# 3) Using datasets::iris, determine the sum of all values in the Sepal.Length column.
+
+iris %>% 
+  select(Sepal.Length) %>% 
+  map(sum)
+```
+
+```{r}
+# 4) Using datasets::InsectSprays calculate the interquartile range of the count column.
+
+InsectSprays %>% 
+  select(count) %>% 
+  map(IQR)
+
+```
+
+```{r}
+# 5) Using tidyr::billboard, identify the maximum value (alphabetically) in the artist column using the max function.
+
+billboard %>% 
+  select(artist) %>% 
+  map(max)
+
+```
+So when your data is a single column, and your function takes a single value as an argument, the function operates on each value of the data.  This is no different than a mutate function.  One important difference, though, is that the input data is a data frame (a column of a dataframe which is also, itself, a dataframe) and the output is a vector.
+
+```{r}
+
+
+
+```
+
