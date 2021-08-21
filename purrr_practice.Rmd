@@ -32,6 +32,8 @@ mtcars_disp
 And we're going to do a very simple operation with this dataset:  we're just going to take the square root of those numbers.
 
 This is an easy thing to do with just the sqrt function, so let's start by just using mutate and the sqrt function.
+
+We haven't gotten to ```purrr``` yet, but this will get our minds thinking and making connections to what ```purrr``` does.
 ```{r}
 mtcars_disp %>% 
   mutate(sqrt_disp = sqrt(disp))
@@ -39,9 +41,10 @@ mtcars_disp %>%
 
 
 
+Next we're going to use the map function to do the same thing.
 
 The ```map``` function takes two arguments: the data and the function.
-The syntax is map(data, function).
+The syntax is ```map(data, function)```.
 
 Let's take the square root of the mtcars_disp data using the map function.
 
@@ -62,7 +65,9 @@ mtcars %>%
 
 This way we don't have to create a new object called ```mtcars_disp```, and that will help us as we try different datasets.  We don't need to create new single-column objects for each dataset.
 
-Let's do the following exercises.
+Let's do the following exercises.  Importantly, recall that the pipe passes data in as the first argument of the function.  So we are still complying with the ```map(data, function)``` syntax even though the only argument we have inside of ```map``` is the function argument.
+
+As you go through these exercises, notice that each element of the data is treated with the function inside of ```map```.
 
 **these use functions that work on each item in a column**
 
