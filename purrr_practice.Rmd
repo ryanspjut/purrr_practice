@@ -208,9 +208,10 @@ billboard %>%
   map(max)
 
 ```
-So when your data is a single column, and your function takes a single value as an argument, the function operates on each value of the data.  This is no different than a mutate function.  One important difference, though, is that the input data is a data frame (a column of a dataframe which is also, itself, a dataframe) and the output is a vector.
+So when your data is a single column, and your function takes a single value as an argument, the function operates on each value of the data.  This is no different than a mutate function.  One important difference, though, is that the input data is a data frame (a column of a dataframe which is also, itself, a dataframe) and the output is a list with a single element (because the input was a single column) and that element is a vector.  The vector is long because the function acts on each value in the input column, but that's just the nature of the function.
 
-When your data is a single column and your function takes a column of data to return a single value, you get a single value per column.  Importantly, this operation takes a dataframe as input (a column of a dataframe) and the output is a list.  So far we have only worked with a single column.  Note that the list only has a single value.  Also notice that the name of the list element is the column name.
+When your data is a single column and your function takes a column of data to return a single value, you still get a list with a single element (because your input was only one column).  The list element is, again, a vector.  But it happens to be a vector of length 1 because the function takes a lot of input values and returns a single output value.
+
 
 In a moment, we'll look closer at list structures, but let's stay with ```map``` a little longer first.
 
